@@ -6,6 +6,33 @@
     <title>Deed Processor — NJ Estate Planning</title>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="style.css"/>
+    <style>
+        /* Un par de estilos rápidos para alinear el botón "+" estéticamente */
+        .grantee-hdr {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .add-btn {
+            background: var(--gold-pale);
+            border: 1px solid var(--gold);
+            color: var(--ink);
+            border-radius: 4px;
+            padding: 1px 6px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .add-btn:hover {
+            background: var(--gold);
+            color: white;
+        }
+        .extra-grantee {
+            margin-top: 8px;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -34,16 +61,21 @@
         <div class="form-card">
             <div class="form-title">Required Information</div>
             <div class="info-box">Claude extracts all deed data automatically. Only fill what's not in the original deed.</div>
+            
             <div class="fr2">
-                <div class="fg">
-                    <label class="fl">Grantee / Trust Name <span class="req">*</span></label>
-                    <input type="text" class="fi" id="inp_grantee" placeholder="e.g. Kline Family Living Trust"/>
+                <div class="fg" id="granteeContainer">
+                    <div class="grantee-hdr">
+                        <label class="fl">Grantee / Trust Name <span class="req">*</span></label>
+                        <button type="button" class="add-btn" onclick="addGranteeField()">+ Add</button>
+                    </div>
+                    <input type="text" class="fi grantee-input" id="inp_grantee" placeholder="e.g. Kline Family Living Trust"/>
                 </div>
                 <div class="fg">
                     <label class="fl">Trustee Name(s)</label>
                     <input type="text" class="fi" id="inp_trustee" placeholder="e.g. William J. Kline, Jr."/>
                 </div>
             </div>
+
             <div class="fr2">
                 <div class="fg">
                     <label class="fl">Trust Date</label>
@@ -54,9 +86,10 @@
                     <input type="date" class="fi" id="inp_signingDate"/>
                 </div>
             </div>
+
             <div class="fr2">
                 <div class="fg">
-                    <label class="fl">Grantor SSN — Last 3 digits <span class="req">*</span></label>
+                    <label class="fl">Grantor SSN — Last 3 digits <span style="color:var(--ink-light);font-size:10px">(optional)</span></label>
                     <input type="text" class="fi" id="inp_ssn" placeholder="e.g. 456" maxlength="3"/>
                 </div>
                 <div class="fg">
@@ -64,6 +97,7 @@
                     <input type="date" class="fi" id="inp_dod"/>
                 </div>
             </div>
+            
             <div class="fg">
                 <label class="fl">Prepared By (Attorney)</label>
                 <input type="text" class="fi" id="inp_preparedBy" placeholder="e.g. Russ Nesevich, Esq."/>
