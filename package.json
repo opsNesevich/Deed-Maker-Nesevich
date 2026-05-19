@@ -1,5 +1,15 @@
-"dependencies": {
-    "adm-zip": "^0.5.x",
-    "express": "^4.x.x",
-    "pdf-lib": "^1.x.x"
+{
+  "name": "deed-maker-nesevich",
+  "version": "1.0.0",
+  "description": "NJ Estate Planning Deed Package Generator — Nesevich Law",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.10",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "pdf-lib": "^1.17.1"
   }
+}
