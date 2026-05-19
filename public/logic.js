@@ -190,3 +190,12 @@ app.post('/api/claude', async (req, res) => {
 const PORT = process.env.PORT || 8080;
 const server = app.listen(PORT, () => console.log(`Deed Processor running on port ${PORT}`));
 server.timeout = 120000;
+
+function addGranteeField() {
+    const container = document.getElementById('granteeContainer');
+    const newInput = document.createElement('input');
+    newInput.type = 'text';
+    newInput.className = 'fi grantee-input extra-grantee';
+    newInput.placeholder = 'e.g. Additional Grantee / Trust Name';
+    container.appendChild(newInput);
+}
