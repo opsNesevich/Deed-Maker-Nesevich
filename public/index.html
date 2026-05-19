@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Deed Processor — NJ Estate Planning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<header>
+    <div class="logo">
+        <div class="logo-mark">§</div>
+        <div>
+            <div class="logo-text">Deed Processor</div>
+            <div class="logo-sub">NJ Estate Planning · Probate · Trusts</div>
+        </div>
+    </div>
+    <div class="badge">Burlington County · NJ</div>
+</header>
+<div class="main">
+    <div id="uploadSection">
+        <div class="upload-card" id="dz" ondragover="dzOver(event)" ondragleave="dzLeave()" ondrop="dzDrop(event)">
+            <input type="file" id="fileIn" accept=".pdf,application/pdf" onchange="handleFile(this.files[0])"/>
+            <div class="upload-icon">📄</div>
+            <div class="upload-title">Drop the Original Deed PDF here</div>
+            <div class="upload-sub">Claude reads the scanned deed and fills the official NJ forms automatically<br>PDF only — minimal data entry required</div>
+        </div>
+        <div class="file-chip" id="fileChip">
+            <span>📄</span>
+            <span class="file-chip-name" id="chipName"></span>
+            <button onclick="resetAll()">✕</button>
+        </div>
+        <div class="form-card">
+            <div class="form-title">Required Information</div>
+            <div class="info-box">Claude extracts all deed data automatically. Only fill what's not in the original deed.</div>
+            <div class="fr2">
+                <div class="fg">
+                    <label class="fl">Grantee / Trust Name <span class="req">*</span></label>
+                    <input type="text" class="fi" id="inp_grantee" placeholder="e.g. Kline Family Living Trust"/>
+                </div>
+                <div class="fg">
+                    <label class="fl">Trustee Name(s)</label>
+                    <input type="text" class="fi" id="inp_trustee" placeholder="e.g. William J. Kline, Jr."/>
+                </div>
+            </div>
+            <div class="fr2">
+                <div class="fg">
+                    <label class="fl">Trust Date</label>
+                    <input type="date" class="fi" id="inp_trustDate"/>
+                </div>
+                <div class="fg">
+                    <label class="fl">Signing / Deed Date <span style="color:var(--ink-light);font-size:10px">(optional)</span></label>
+                    <input type="date" class="fi" id="inp_signingDate"/>
+                </div>
+            </div>
+            <div class="fr2">
+                <div class="fg">
+                    <label class="fl">Grantor SSN — Last 3 digits <span class="req">*</span></label>
+                    <input type="text" class="fi" id="inp_ssn" placeholder="e.g. 456" maxlength="3"/>
+                </div>
+                <div class="fg">
+                    <label class="fl">Date of Death (if applicable)</label>
+                    <input type="date" class="fi" id="inp_dod"/>
+                </div>
+            </div>
+            <div class="fg">
+                <label class="fl">Prepared By (Attorney)</label>
+                <input type="text" class="fi" id="inp_preparedBy" placeholder="e.g. Russ Nesevich, Esq."/>
+            </div>
+            <div class="fg">
+                <label class="fl">Return To (Firm & Address)</label>
+                <input type="text" class="fi" id="inp_returnTo" placeholder="e.g. Nesevich Law, LLC, 400 North Church St, Moorestown NJ 08057"/>
+            </div>
+        </div>
+        <div class="error-box" id="errorBox"></div>
+        <button class="gen-btn" id="genBtn" onclick="generate()" disabled>
+            <span id="genBtnText">✦ Generate All 3 Documents</span>
+            <span class="spinner" id="genSpinner" style="display:none"></span>
+        </button>
+    </div>
+
+    <div class="progress-wrap" id="progressWrap">
+        <div class="ps"><div class="psicon" id="s1i">1</div><div class="pslbl" id="s1l">Converting PDF to images…</div></div>
+        <div class="ps"><div class="psicon" id="s2i">2</div><div class="pslbl" id="s2l">Claude reading the deed…</div></div>
+        <div class="ps"><div class="psicon" id="s3i">3</div><div class="pslbl" id="s3l">Filling Deed (.docx)…</div></div>
+        <div class="ps"><div class="psicon" id="s4i">4</div><div class="pslbl" id="s4l">Filling Affidavit of Consideration…</div></div>
+        <div class="ps"><div class="psicon" id="s5i">5</div><div class="pslbl" id="s5l">Filling Seller's Residency…</div></div>
+    </div>
+
+    <div class="results" id="results">
+        <div class="results-hdr">Documents Ready</div>
+        <div class="results-sub" id="resultsSub">3 documents ready</div>
+        <div class="doc-row">
+            <div class="doc-row-icon">📝</div>
+            <div class="doc-row-info">
+                <div class="doc-row-title">Deed of Conveyance</div>
+                <div class="doc-row-sub">Word document (.docx) · Ready to print and sign</div>
+            </div>
+            <button class="doc-row-btn" onclick="downloadBlob('deed')">↓ Download .docx</button>
+        </div>
+        <div class="doc-row">
+            <div class="doc-row-icon">📋</div>
+            <div class="doc-row-info">
+                <div class="doc-row-title">Affidavit of Consideration (RTF-1)</div>
+                <div class="doc-row-sub" id="aff-sub">State of New Jersey · Burlington County</div>
+            </div>
+            <button class="doc-row-btn" onclick="downloadBlob('aff')">↓ Download PDF</button>
+        </div>
+        <div class="doc-row">
+            <div class="doc-row-icon">📋</div>
+            <div class="doc-row-info">
+                <div class="doc-row-title">Seller's Residency Certification (GIT/REP-3)</div>
+                <div class="doc-row-sub" id="res-sub">State of New Jersey</div>
+            </div>
+            <button class="doc-row-btn" onclick="downloadBlob('res')">↓ Download PDF</button>
+        </div>
+        <button class="dl-all" onclick="downloadAll()">↓ Download All 3 Documents</button>
+        <button class="reset-btn" onclick="resetAll()">↩ Process Another Deed</button>
+    </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
