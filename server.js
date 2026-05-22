@@ -33,7 +33,7 @@ function getCoworkPaths() {
       DEEDS_TEMPLATES: context ? path.join(context, 'Deeds') : localTemplates,
     };
   } catch (e) {
-    const localTemplates = fs.existsSync(path.join(__dirname, 'templates'))
+    const LOCAL_TEMPLATES = path.join(__dirname, 'templates');
       ? path.join(__dirname, 'templates')
       : path.join(__dirname, 'template');
     return { UPLOADS: '', OUTPUTS: '', DEEDS_DESKTOP: null, DEEDS_TEMPLATES: localTemplates };
