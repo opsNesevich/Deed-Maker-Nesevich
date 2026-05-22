@@ -28,6 +28,6 @@ RUN npm install --omit=dev
 
 # 5. Copiar el código fuente
 COPY . .
-
+# cache-bust: 2026-05-22
 EXPOSE 8080
 CMD ["npm", "start"]
